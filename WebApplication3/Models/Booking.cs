@@ -4,6 +4,10 @@ namespace WebApplication3.Models
 {
     public class Booking
     {
+        public Booking()
+        {
+            Payments = new List<Payment>();
+        }
         public int id { get; set; }
         public int clientId { get; set; }
         public Client? clientNavigation { get; set; }
@@ -18,6 +22,6 @@ namespace WebApplication3.Models
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         [Display(Name = "Сумма бронювання")]
         public DateTime totalPrice { get; set; }
-        public virtual Payment? Payments { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

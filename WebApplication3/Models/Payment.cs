@@ -7,7 +7,7 @@ namespace WebApplication3.Models
     {
         public int id { get; set; }
         public int bookingIid { get; set; }
-        public virtual Booking? BookingNavigation { get; set; }
+        public virtual Booking? Booking { get; set; }
         public int typeId { get; set; }
         public virtual PaymentType PaymentType { get; set; } = null!;
 

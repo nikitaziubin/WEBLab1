@@ -8,7 +8,6 @@ namespace WebApplication3.Models
             Payments = new List<Payment>();
         }
         public int id { get; set; }
-        public int paymentId { get; set; }
         public string? paymentType { get; set; }
         public virtual ICollection<Payment> Payments { get; }
     }
