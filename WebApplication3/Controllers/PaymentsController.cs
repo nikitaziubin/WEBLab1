@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
 {
-    public class PaymentsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PaymentsController : ControllerBase
     {
         private readonly HotelContext _context;
 
@@ -18,145 +20,104 @@ namespace WebApplication3.Controllers
             _context = context;
         }
 
-        // GET: Payments
-        public async Task<IActionResult> Index()
+        // GET: api/Payments
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Payment>>> GetPayments()
         {
-              return _context.Payments != null ? 
-                          View(await _context.Payments.ToListAsync()) :
-                          Problem("Entity set 'HotelContext.Payments'  is null.");
+          if (_context.Payments == null)
+          {
+              return NotFound();
+          }
+            return await _context.Payments.ToListAsync();
         }
 
-        // GET: Payments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Payments/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Payment>> GetPayment(int id)
         {
-            if (id == null || _context.Payments == null)
-            {
-                return NotFound();
-            }
-
-            var payment = await _context.Payments
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
-
-            return View(payment);
-        }
-
-        // GET: Payments/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Payments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,bookingIid,typeId,paymentDate,amount")] Payment payment)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(payment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(payment);
-        }
-
-        // GET: Payments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Payments == null)
-            {
-                return NotFound();
-            }
-
+          if (_context.Payments == null)
+          {
+              return NotFound();
+          }
             var payment = await _context.Payments.FindAsync(id);
+
             if (payment == null)
             {
                 return NotFound();
             }
-            return View(payment);
+
+            return payment;
         }
 
-        // POST: Payments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,bookingIid,typeId,paymentDate,amount")] Payment payment)
+        // PUT: api/Payments/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutPayment(int id, Payment payment)
         {
             if (id != payment.id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(payment).State = EntityState.Modified;
+
+            try
             {
-                try
-                {
-                    _context.Update(payment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PaymentExists(payment.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            return View(payment);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PaymentExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Payments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Payments
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Payment>> PostPayment(Payment payment)
         {
-            if (id == null || _context.Payments == null)
+          if (_context.Payments == null)
+          {
+              return Problem("Entity set 'HotelContext.Payments'  is null.");
+          }
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetPayment", new { id = payment.id }, payment);
+        }
+
+        // DELETE: api/Payments/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePayment(int id)
+        {
+            if (_context.Payments == null)
             {
                 return NotFound();
             }
-
-            var payment = await _context.Payments
-                .FirstOrDefaultAsync(m => m.id == id);
+            var payment = await _context.Payments.FindAsync(id);
             if (payment == null)
             {
                 return NotFound();
             }
 
-            return View(payment);
-        }
-
-        // POST: Payments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Payments == null)
-            {
-                return Problem("Entity set 'HotelContext.Payments'  is null.");
-            }
-            var payment = await _context.Payments.FindAsync(id);
-            if (payment != null)
-            {
-                _context.Payments.Remove(payment);
-            }
-            
+            _context.Payments.Remove(payment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return NoContent();
         }
 
         private bool PaymentExists(int id)
         {
-          return (_context.Payments?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Payments?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }

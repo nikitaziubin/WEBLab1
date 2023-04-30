@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
 {
-    public class RoomTypesController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RoomTypesController : ControllerBase
     {
         private readonly HotelContext _context;
 
@@ -18,145 +20,104 @@ namespace WebApplication3.Controllers
             _context = context;
         }
 
-        // GET: RoomTypes
-        public async Task<IActionResult> Index()
+        // GET: api/RoomTypes
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RoomType>>> GetRoomTypes()
         {
-              return _context.RoomTypes != null ? 
-                          View(await _context.RoomTypes.ToListAsync()) :
-                          Problem("Entity set 'HotelContext.RoomTypes'  is null.");
+          if (_context.RoomTypes == null)
+          {
+              return NotFound();
+          }
+            return await _context.RoomTypes.ToListAsync();
         }
 
-        // GET: RoomTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/RoomTypes/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RoomType>> GetRoomType(int id)
         {
-            if (id == null || _context.RoomTypes == null)
-            {
-                return NotFound();
-            }
-
-            var roomType = await _context.RoomTypes
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (roomType == null)
-            {
-                return NotFound();
-            }
-
-            return View(roomType);
-        }
-
-        // GET: RoomTypes/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: RoomTypes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,roomType")] RoomType roomType)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(roomType);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(roomType);
-        }
-
-        // GET: RoomTypes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.RoomTypes == null)
-            {
-                return NotFound();
-            }
-
+          if (_context.RoomTypes == null)
+          {
+              return NotFound();
+          }
             var roomType = await _context.RoomTypes.FindAsync(id);
+
             if (roomType == null)
             {
                 return NotFound();
             }
-            return View(roomType);
+
+            return roomType;
         }
 
-        // POST: RoomTypes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,roomType")] RoomType roomType)
+        // PUT: api/RoomTypes/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutRoomType(int id, RoomType roomType)
         {
             if (id != roomType.id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(roomType).State = EntityState.Modified;
+
+            try
             {
-                try
-                {
-                    _context.Update(roomType);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoomTypeExists(roomType.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            return View(roomType);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RoomTypeExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: RoomTypes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/RoomTypes
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<RoomType>> PostRoomType(RoomType roomType)
         {
-            if (id == null || _context.RoomTypes == null)
+          if (_context.RoomTypes == null)
+          {
+              return Problem("Entity set 'HotelContext.RoomTypes'  is null.");
+          }
+            _context.RoomTypes.Add(roomType);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetRoomType", new { id = roomType.id }, roomType);
+        }
+
+        // DELETE: api/RoomTypes/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRoomType(int id)
+        {
+            if (_context.RoomTypes == null)
             {
                 return NotFound();
             }
-
-            var roomType = await _context.RoomTypes
-                .FirstOrDefaultAsync(m => m.id == id);
+            var roomType = await _context.RoomTypes.FindAsync(id);
             if (roomType == null)
             {
                 return NotFound();
             }
 
-            return View(roomType);
-        }
-
-        // POST: RoomTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.RoomTypes == null)
-            {
-                return Problem("Entity set 'HotelContext.RoomTypes'  is null.");
-            }
-            var roomType = await _context.RoomTypes.FindAsync(id);
-            if (roomType != null)
-            {
-                _context.RoomTypes.Remove(roomType);
-            }
-            
+            _context.RoomTypes.Remove(roomType);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return NoContent();
         }
 
         private bool RoomTypeExists(int id)
         {
-          return (_context.RoomTypes?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.RoomTypes?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }

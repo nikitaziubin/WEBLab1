@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebApplication3.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<HotelContext>(option => option.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 var app = builder.Build();
 
@@ -22,6 +25,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
