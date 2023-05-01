@@ -1,5 +1,6 @@
 ﻿const uri = 'api/rooms';
 const uriRoomtypes = 'api/roomTypes';
+const uriBoking = 'api/bookings';
 let rooms = [];
 
 
@@ -27,12 +28,11 @@ function getRooms() {
 function addCategory() {
     const addroomNumberTextbox = document.getElementById('add-roomNumber');
     const addoneNightPriceTextbox = document.getElementById('add-oneNightPrice');
-    const addstateTextbox = document.getElementById('add-state');
     const addroomTypeTextbox = document.getElementById('mySelect');
     const category = {
         roomNumber: addroomNumberTextbox.value.trim(),
         oneNightPrice: addoneNightPriceTextbox.value.trim(),
-        state: addstateTextbox.value.trim(),
+        state: false, /*addstateTextbox.value.trim(),*/
         roomTypeId: addroomTypeTextbox.value.trim(),
     };
     fetch(uri, {
@@ -106,6 +106,19 @@ function updateCategory() {
 function closeInput() {
     document.getElementById('editForm').style.display = 'none';
 }
+function redirectToBookingPage(roomId) {
+    window.location.href = `Booking.html?room=${roomId}`;
+}
+
+function toggleAddBookingButtonVisibility(state) {
+    const addBookingButton = document.querySelector('#add-booking-button');
+
+    if (state) {
+        addBookingButton.style.display = 'block';
+    } else {
+        addBookingButton.style.display = 'none';
+    }
+}
 
 function _displayRooms(data) {
     const tBody = document.getElementById('rooms');
@@ -116,9 +129,15 @@ function _displayRooms(data) {
         let editButton = button.cloneNode(false);
         editButton.innerText = 'Edit';
         editButton.setAttribute('onclick', `displayEditForm(${room.id})`);
+
         let deleteButton = button.cloneNode(false);
         deleteButton.innerText = 'Delete';
         deleteButton.setAttribute('onclick', `deleteCategory(${room.id})`);
+
+        let makeBooking = button.cloneNode(false);
+        makeBooking.innerText = 'Booking';
+        makeBooking.setAttribute('onclick', `redirectToBookingPage(${room.id})`);
+
         let tr = tBody.insertRow();
 
         let td1 = tr.insertCell(0);
@@ -142,6 +161,12 @@ function _displayRooms(data) {
 
         let td5 = tr.insertCell(5);
         td5.appendChild(deleteButton);
+
+        if (room.state == false) {
+
+            let td6 = tr.insertCell(6);
+            td6.appendChild(makeBooking);
+        }   
     });
     rooms = data;
 }

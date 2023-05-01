@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Informatics-2021-Lab2 Library</title>
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <h1>Informatics-2021-Lab2 Library</h1>
+    <h3>Add Category</h3>
+
+    <form action="javascript:void(0);" method="POST">
+        <div class="RoomNumber">
+            <label for="roomNumber">Room Number:</label>
+        </div>
+        <input type="text" id="roomNumber" placeholder="roomNumber">
+        <div class="RoomNumber">
+            <label for="add-Arrival-date">Arrival-date:</label>
+        </div>
+        <input type="text" id="add-Arrival-date" placeholder="Arrival-date">
+
+        <div class="RoomNumber">
+            <label for="add-Departure-date">Departure-date:</label>
+        </div>
+        <input type="text" id="add-Departure-date" placeholder="add-Departure-date">
+
+        <div class="RoomNumber">
+            <label for="add-All-price">All-price:</label>
+        </div>
+        <input type="text" id="add-All-price" placeholder="All-price">
+
+        <div class="RoomNumber">
+            <label for="OneKnightPrice">OneKnightPrice:</label>
+        </div>
+        <input type="text" id="OneKnightPrice" placeholder="New state">
+
+        <div class="RoomNumber">
+            <label for="Name">Name:</label>
+        </div>
+        <input type="text" id="Name" placeholder="Name">
+
+        <input type="button" value="CalculateSum" onclick="calculateSum()">
+        <!--<input type="submit" value="Add" onclick="addBooking()">-->
+        <input type="submit" id="addBookingButton" value="Add" onclick="addBooking()">
+
+    </form>
+    <script src="js/booking.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        getbooking();
+    </script>
+</body>
+</html>

@@ -21,7 +21,7 @@ namespace WebApplication3.Models
         public DateTime departureDate { get; set; }
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         [Display(Name = "Сумма бронювання")]
-        public DateTime totalPrice { get; set; }
+        public double totalPrice { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }
 }

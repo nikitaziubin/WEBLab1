@@ -28,7 +28,7 @@ namespace WebApplication3.Controllers
           {
               return NotFound();
           }
-            return await _context.Bookings.ToListAsync();
+            return await _context.Bookings.Include(p=>p.clientNavigation).Include(p=>p.roomNavigation).ToListAsync();
         }
 
         // GET: api/Bookings/5
