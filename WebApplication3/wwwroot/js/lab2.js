@@ -1,5 +1,21 @@
 ﻿const uri = 'api/rooms';
+const uriRoomtypes = 'api/roomTypes';
 let rooms = [];
+
+
+fetch(uriRoomtypes)
+    .then(response => response.json()) 
+    .then(roomTypes => { 
+        roomTypes.forEach(roomType => { 
+            const optionElement = document.createElement("option"); 
+            optionElement.value = roomType.id;
+            optionElement.text = roomType.roomType;
+            selectElement.appendChild(optionElement);
+        });
+    })
+    .catch(error => console.error(error));
+const selectElement = document.getElementById("mySelect");
+
 
 function getRooms() {
     fetch(uri)
@@ -9,11 +25,15 @@ function getRooms() {
 }
 
 function addCategory() {
-    const addNameTextbox = document.getElementById('add-name');
-    const addInfoTextbox = document.getElementById('add-description');
+    const addroomNumberTextbox = document.getElementById('add-roomNumber');
+    const addoneNightPriceTextbox = document.getElementById('add-oneNightPrice');
+    const addstateTextbox = document.getElementById('add-state');
+    const addroomTypeTextbox = document.getElementById('mySelect');
     const category = {
-        name: addNameTextbox.value.trim(),
-        info: addInfoTextbox.value.trim(),
+        roomNumber: addroomNumberTextbox.value.trim(),
+        oneNightPrice: addoneNightPriceTextbox.value.trim(),
+        state: addstateTextbox.value.trim(),
+        roomTypeId: addroomTypeTextbox.value.trim(),
     };
     fetch(uri, {
         method: 'POST',
@@ -26,8 +46,6 @@ function addCategory() {
         .then(response => response.json())
         .then(() => {
             getRooms();
-            addNameTextbox.value = '';
-            addInfoTextbox.value = '';
         })
         .catch(error => console.error('Unable to add category.', error));
 }
@@ -41,13 +59,25 @@ function deleteCategory(id) {
 }
 
 function displayEditForm(id) {
+    fetch(uriRoomtypes)
+        .then(response => response.json())
+        .then(roomTypes => {
+            roomTypes.forEach(roomType => {
+                const optionElement = document.createElement("option");
+                optionElement.value = roomType.id;
+                optionElement.text = roomType.roomType;
+                selectElement.appendChild(optionElement);
+            });
+        })
+        .catch(error => console.error(error));
+    const selectElement = document.getElementById("edit-mySelect");
     const room = rooms.find(room => room.id === id);
     document.getElementById('edit-id').value = room.id;
     document.getElementById('edit-roomNumber').value = room.roomNumber;
     document.getElementById('edit-oneNightPrice').value = room.oneNightPrice;
     document.getElementById('edit-state').value = room.state;
-    document.getElementById('edit-roomType').value = room.roomTypeNavigation.roomType;
-    document.getElementById('editForm').style.display = 'block'; 
+    document.getElementById('edit-mySelect');// = room.roomTypeid;
+    document.getElementById('editForm').style.display = 'block';
 }
 
 function updateCategory() {
@@ -57,7 +87,7 @@ function updateCategory() {
         roomNumber: document.getElementById('edit-roomNumber').value.trim(),
         oneNightPrice: document.getElementById('edit-oneNightPrice').value.trim(),
         state: document.getElementById('edit-state').value.trim(),
-        roomType: document.getElementById('edit-roomType').value.trim()
+        roomTypeid: document.getElementById('edit-mySelect').value.trim()
     };
     fetch(`${uri}/${categoryId}`, {
         method: 'PUT',

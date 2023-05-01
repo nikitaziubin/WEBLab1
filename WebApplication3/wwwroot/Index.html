@@ -9,18 +9,20 @@
     <h1>Informatics-2021-Lab2 Library</h1>
     <h3>Add Category</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addCategory()">
-        <input type="text" id="add-name" placeholder="New Category">
-        <input type="text" id="add-description" placeholder="New Description Category">
+        <input type="text" id="add-roomNumber" placeholder="New roomNumber">
+        <input type="text" id="add-oneNightPrice" placeholder="New oneNightPrice">
+        <input type="text" id="add-state" placeholder="New state">
+        <select id="mySelect"></select>
         <input type="submit" value="Add">
     </form>
     <div id="editCategory">
         <h3>Edit</h3>
-        <form action="javascript:void(0);" onsubmit="updateCategory()">
+        <form action="javascript:void(0);" onsubmit="updateCategory()" id="editForm">
             <input type="hidden" id="edit-id">
             <input type="text" id="edit-roomNumber">
             <input type="text" id="edit-oneNightPrice">
             <input type="text" id="edit-state">
-            <input type="text" id="edit-roomType">
+            <select id="edit-mySelect"></select>
             <input type="submit" value="Save">
             <a onclick="closeInput()" aria-label="Close">&#10006;</a>
         </form>
