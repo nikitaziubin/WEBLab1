@@ -89,6 +89,9 @@ namespace WebApplication3.Controllers
           {
               return Problem("Entity set 'HotelContext.Bookings'  is null.");
           }
+            var room = _context.Rooms.FirstOrDefault(r => r.id == booking.roomNavigation.id);
+            room.state = true;
+            booking.roomNavigation = null;
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 

@@ -43,12 +43,13 @@ function addBooking() {
     const departureDate = document.getElementById('add-Departure-date');
     const totalPrice = document.getElementById('add-All-price');
     const clientId = document.getElementById('Name');
-    const category = {
+    const booking = {
         roomId: roomId.id,
         arrivalDate: arrivalDate.value.trim(),
         departureDate: departureDate.value.trim(),
         totalPrice: totalPrice.value.trim(),
         clientId: 1,
+        roomNavigation: roomId,
     };
 
     fetch(uriBoking, {
@@ -57,38 +58,37 @@ function addBooking() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(category)
+        body: JSON.stringify(booking)
     })
         .then(response => response.json())
-        //.then(() => {
-        //    a();
-        //})
+        .then(() => {
+            window.location.href = '/Index.html';
+        })
         .catch(error => console.error('Unable to add category.', error));
-    a(roomNumber);
-    window.location.href = '/Index.html';
+    //a(roomNumber);
+    
 }
-function a(roomNumber) {
+function PUTRoom(roomNumber) {
     /*const id = roomId.id;*/
     const roomId = rooms.find(roomId => roomId.roomNumber === roomNumber);
     const room = {
+        id: roomId.id,
         roomNumber: roomId.roomNumber,
         oneNightPrice: roomId.oneNightPrice,
         state: true,
         roomTypeId: roomId.roomTypeNavigation.roomType,
     };
-    fetch(`${uri}/${roomId.id}`, {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(room)
-    })
-        .then(response => response.json())
-        .then(() => {
-            getRooms();
-        })
-        .catch(error => console.error('Unable to update category.', error));
+    //let roomID = String(room.id);
+    //fetch(`${uri}/${roomID}`, {
+    //    method: 'PUT',
+    //    headers: {
+    //        'Accept': 'application/json',
+    //        'Content-Type': 'application/json'
+    //    },
+    //    body: JSON.stringify(room)
+    //})
+    //    .then(() => getRooms())
+    //    .catch(error => console.error('Unable to update category.', error));
 }
 
 function calculateSum() {
@@ -98,8 +98,6 @@ function calculateSum() {
     const endDate = new Date(departureDate);
     const diff = endDate.getTime() - startDate.getTime();
     const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    const totalPrice = document.getElementById('add-All-price').value;
     const oneNightPrice = document.getElementById('OneKnightPrice').value;
 
     document.getElementById('add-All-price').value = oneNightPrice * diffDays;
