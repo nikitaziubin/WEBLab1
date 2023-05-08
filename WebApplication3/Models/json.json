@@ -1,0 +1,53 @@
+{
+  "roomId": 1012,
+  "arrivalDate": "02-02-2004",
+  "departureDate": "22-02-2004",
+  "totalPrice": 20000.54,
+  "clientId": 1,
+  "roomNavigation": {
+    "id": 1012,
+    "roomNumber": 23,
+    "roomTypeId": 1,
+    "roomTypeNavigation": {
+      "id": 1,
+      "roomType": "Однокімнатна ",
+      "rooms": [
+        {
+          "id": 1014,
+          "roomNumber": 27,
+          "roomTypeId": 1,
+          "oneNightPrice": 1000,
+          "state": false,
+          "bookings": []
+        },
+        {
+          "id": 1019,
+          "roomNumber": 24,
+          "roomTypeId": 1,
+          "oneNightPrice": 1000,
+          "state": false,
+          "bookings": []
+        },
+        {
+          "id": 1020,
+          "roomNumber": 12,
+          "roomTypeId": 1,
+          "oneNightPrice": 1000,
+          "state": false,
+          "bookings": []
+        },
+        {
+          "id": 1021,
+          "roomNumber": 1,
+          "roomTypeId": 1,
+          "oneNightPrice": 1000,
+          "state": false,
+          "bookings": []
+        }
+      ]
+    },
+    "oneNightPrice": 1000,
+    "state": false,
+    "bookings": []
+  }
+}

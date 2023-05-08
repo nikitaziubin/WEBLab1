@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using WebApplication3.Models;
 
 namespace WebApplication3.Models
 {
@@ -17,5 +18,7 @@ namespace WebApplication3.Models
         {
             Database.EnsureCreated();
         }
+
+        public DbSet<WebApplication3.Models.FullSum> FullSum { get; set; } = default!;
     }
 }

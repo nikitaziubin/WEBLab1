@@ -2,6 +2,8 @@
 const uriClient = 'api/clients';
 const uriRoomtypes = 'api/roomTypes';
 const uriBoking = 'api/bookings';
+const uriFullSum = 'api/FullSums';
+
 let clients = [];
 let rooms = [];
 
@@ -47,7 +49,7 @@ function addBooking() {
         roomId: roomId.id,
         arrivalDate: arrivalDate.value.trim(),
         departureDate: departureDate.value.trim(),
-        totalPrice: totalPrice.value.trim(),
+        totalPrice: 20000,//parseFloat(totalPrice.value.trim()),
         clientId: 1,
         roomNavigation: roomId,
     };
@@ -61,46 +63,46 @@ function addBooking() {
         body: JSON.stringify(booking)
     })
         .then(response => response.json())
-        .then(() => {
-            window.location.href = '/Index.html';
-        })
+        //.then(() => {
+        //    window.location.href = '/Index.html';
+        //})
         .catch(error => console.error('Unable to add category.', error));
-    //a(roomNumber);
-    
 }
-function PUTRoom(roomNumber) {
-    /*const id = roomId.id;*/
-    const roomId = rooms.find(roomId => roomId.roomNumber === roomNumber);
-    const room = {
-        id: roomId.id,
-        roomNumber: roomId.roomNumber,
-        oneNightPrice: roomId.oneNightPrice,
-        state: true,
-        roomTypeId: roomId.roomTypeNavigation.roomType,
-    };
-    //let roomID = String(room.id);
-    //fetch(`${uri}/${roomID}`, {
-    //    method: 'PUT',
-    //    headers: {
-    //        'Accept': 'application/json',
-    //        'Content-Type': 'application/json'
-    //    },
-    //    body: JSON.stringify(room)
-    //})
-    //    .then(() => getRooms())
-    //    .catch(error => console.error('Unable to update category.', error));
+function setsum(data) {
+
+        document.getElementById('add-All-price').value = data;
+
 }
 
 function calculateSum() {
     const arrivalDate = document.getElementById('add-Arrival-date').value;
     const departureDate = document.getElementById('add-Departure-date').value;
-    const startDate = new Date(arrivalDate);
-    const endDate = new Date(departureDate);
-    const diff = endDate.getTime() - startDate.getTime();
-    const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const oneNightPrice = document.getElementById('OneKnightPrice').value;
+    const OneKnightPrice = document.getElementById('OneKnightPrice').value;
 
-    document.getElementById('add-All-price').value = oneNightPrice * diffDays;
-    document.getElementById('add-Arrival-date').value = arrivalDate;
-    document.getElementById('add-Departure-date').value = departureDate;
+    const Fullsum = {
+        arrivalDate: arrivalDate,
+        departureDate: departureDate,
+        oneNightPrice: OneKnightPrice,
+    };
+    //`${uriBoking}/CalculateSum`
+    fetch(uriFullSum, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(Fullsum)
+    })
+        .then(response => response.json())
+        .then(data => setsum(data))
+        .catch(error => console.error('Unable to add category.', error));
+    //const startDate = new Date(arrivalDate);
+    //const endDate = new Date(departureDate);
+    //const diff = endDate.getTime() - startDate.getTime();
+    //const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+    //const oneNightPrice = document.getElementById('OneKnightPrice').value;
+
+    //document.getElementById('add-All-price').value = oneNightPrice * diffDays;
+    //document.getElementById('add-Arrival-date').value = arrivalDate;
+    //document.getElementById('add-Departure-date').value = departureDate;
 }

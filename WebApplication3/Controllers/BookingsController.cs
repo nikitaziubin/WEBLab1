@@ -94,7 +94,6 @@ namespace WebApplication3.Controllers
             booking.roomNavigation = null;
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetBooking", new { id = booking.id }, booking);
         }
 
@@ -110,7 +109,7 @@ namespace WebApplication3.Controllers
             if (booking == null)
             {
                 return NotFound();
-            }
+            }   
 
             _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
