@@ -47,9 +47,9 @@ function addBooking() {
     const clientId = document.getElementById('Name');
     const booking = {
         roomId: roomId.id,
-        arrivalDate: arrivalDate.value.trim(),
+        arrivalDate:  arrivalDate.value.trim(),
         departureDate: departureDate.value.trim(),
-        totalPrice: 20000,//parseFloat(totalPrice.value.trim()),
+        totalPrice: parseFloat(totalPrice.value.trim()),
         clientId: 1,
         roomNavigation: roomId,
     };
@@ -63,9 +63,9 @@ function addBooking() {
         body: JSON.stringify(booking)
     })
         .then(response => response.json())
-        //.then(() => {
-        //    window.location.href = '/Index.html';
-        //})
+        .then(() => {
+            window.location.href = '/Index.html';
+        })
         .catch(error => console.error('Unable to add category.', error));
 }
 function setsum(data) {
@@ -96,13 +96,4 @@ function calculateSum() {
         .then(response => response.json())
         .then(data => setsum(data))
         .catch(error => console.error('Unable to add category.', error));
-    //const startDate = new Date(arrivalDate);
-    //const endDate = new Date(departureDate);
-    //const diff = endDate.getTime() - startDate.getTime();
-    //const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-    //const oneNightPrice = document.getElementById('OneKnightPrice').value;
-
-    //document.getElementById('add-All-price').value = oneNightPrice * diffDays;
-    //document.getElementById('add-Arrival-date').value = arrivalDate;
-    //document.getElementById('add-Departure-date').value = departureDate;
 }
