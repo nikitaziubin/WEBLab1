@@ -20,5 +20,6 @@ namespace WebApplication3.Models
         }
 
         public DbSet<WebApplication3.Models.FullSum> FullSum { get; set; } = default!;
+
     }
 }
