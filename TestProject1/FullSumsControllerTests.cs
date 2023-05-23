@@ -68,5 +68,32 @@ namespace TestProject1
             Room room = roomtest.Result.Value;
             Assert.Null(room);
         }
+        [Fact]
+        public void GetRoomNotNull4()
+        {
+            RoomsController controller = new RoomsController(dbFixture.Db);
+            for (int i = 1012; i < 1015; i++)
+            {
+                Task<ActionResult<Room>> roomtest = controller.GetRoom(i);
+                Room room = roomtest.Result.Value;
+                Assert.NotNull(room);
+            }   
+        }
+        [Fact]
+        public void GetBookingNull4()
+        {
+            BookingsController controller = new BookingsController(dbFixture.Db);
+            Task<ActionResult<Booking>> booktests = controller.GetBooking(1);
+            Booking book = booktests.Result.Value;
+            Assert.Null(book);
+        }
+        [Fact]
+        public void GetBookingContainsTere()
+        {
+            BookingsController controller = new BookingsController(dbFixture.Db);
+            Task<ActionResult<Booking>> booktests = controller.GetBooking(1);
+            Booking book = booktests.Result.Value;
+            Assert.IsNotType<Booking>(book);
+        }
     }
 }
