@@ -126,17 +126,21 @@ function _displayRooms(data) {
     tBody.innerHTML = '';
     const button = document.createElement('button');
     data.forEach(room => {
+
         let editButton = button.cloneNode(false);
         editButton.innerText = 'Edit';
         editButton.setAttribute('onclick', `displayEditForm(${room.id})`);
+        editButton.classList.add('btn', 'btn-light');
 
         let deleteButton = button.cloneNode(false);
         deleteButton.innerText = 'Delete';
         deleteButton.setAttribute('onclick', `deleteCategory(${room.id})`);
+        deleteButton.classList.add('btn', 'btn-light');
 
         let makeBooking = button.cloneNode(false);
         makeBooking.innerText = 'Booking';
         makeBooking.setAttribute('onclick', `redirectToBookingPage(${room.id})`);
+        makeBooking.classList.add('btn', 'btn-light');
 
         let tr = tBody.insertRow();
 

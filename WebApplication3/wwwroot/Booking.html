@@ -2,50 +2,86 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Informatics-2021-Lab2 Library</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Booking</title>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="css/site.css">
+    <!--  <link rel="stylesheet" href="css/site.css"> -->
 </head>
+
+<style>
+    body {
+        background-image: url('Room.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    .Booking-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        /*background-color: rgb(255, 255, 255, 0.8);*/
+    }
+    h1 {
+        text-align: center;
+    }
+    button {
+        
+        font-weight: 700;
+        
+    }
+
+</style>
+
 <body>
-    <h1>Informatics-2021-Lab2 Library</h1>
-    <h3>Add Category</h3>
 
-    <form action="javascript:void(0);">
-        <div class="RoomNumber">
-            <label for="roomNumber">Room Number:</label>
-        </div>
-        <input type="text" id="roomNumber" placeholder="roomNumber">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-        <div class="RoomNumber">
-            <label for="add-Arrival-date">Arrival-date:</label>
-        </div>
-        <input type="text" id="add-Arrival-date" placeholder="Arrival-date">
+        
+    <div class="Booking-container">
+        <form action="javascript:void(0);">
+            <h1>Booking</h1>
 
-        <div class="RoomNumber">
-            <label for="add-Departure-date">Departure-date:</label>
-        </div>
-        <input type="text" id="add-Departure-date" placeholder="Departure-date">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon5">Room Number</span>
+                <input type="text" readonly class="form-control" aria-describedby="basic-addon5" id="roomNumber">
+            </div>
 
-        <div class="RoomNumber">
-            <label for="add-All-price">All-price:</label>
-        </div>
-        <input type="text" id="add-All-price" placeholder="All-price">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon8">Arrival-date</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon8" id="add-Arrival-date">
+            </div>
 
-        <div class="RoomNumber">
-            <label for="OneKnightPrice">OneKnightPrice:</label>
-        </div>
-        <input type="text" id="OneKnightPrice" placeholder="New state">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon10">Departure-date</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon10" id="add-Departure-date">
+            </div>
 
-        <div class="RoomNumber">
-            <label for="Name">Name:</label>
-        </div>
-        <input type="text" id="Name" placeholder="Name">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon6">All-price</span>
+                <input type="text" readonly class="form-control" aria-describedby="basic-addon6" id="add-All-price">
+            </div>
 
-        <input type="button" value="CalculateSum" onclick="calculateSum()">
-        <!--<input type="submit" value="Add" onclick="addBooking()">-->
-        <input type="submit" id="addBookingButton" value="Add" onclick="addBooking()">
-    </form>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon7">OneKnightPrice</span>
+                <input type="text" readonly class="form-control" aria-describedby="basic-addon7" id="OneKnightPrice">
+            </div>
+
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon11">Name</span>
+                <input type="text" readonly class="form-control" aria-describedby="basic-addon11" id="Name">
+            </div>
+            <div class="button">
+                <input type="button" class="btn btn-dark" value="CalculateSum" onclick="calculateSum()">
+                <input type="submit" class="btn btn-dark" id="addBookingButton" value="Add" onclick="addBooking()">
+            </div>
+
+        </form>
+    </div>
+    
     <script src="js/booking.js" asp-append-version="true"></script>
     <script type="text/javascript">
         getbooking();

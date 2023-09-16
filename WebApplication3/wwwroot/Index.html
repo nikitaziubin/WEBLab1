@@ -1,44 +1,133 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Informatics-2021-Lab2 Library</title>
-    <link rel="stylesheet" href="css/site.css">
+    <title>WEBLAB 2023</title>
+    <!-- <link rel="stylesheet" href="css/site.css"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
+
+<style>
+    body {
+        background-image: url('78522981.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    
+    .table-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 90%;
+        margin: 0 auto;
+        background-color: rgb(255, 255, 255, 0.1);
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: center;
+        color: black;
+    }
+
+    .form-container {
+        display: flex;
+       /* background-color: rgb(255, 255, 255, 0.8);*/
+        width: 1000px;
+        margin-left: 200px;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .headers {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: black;
+        font-weight: 700;
+    }
+</style>
+
+
 <body>
-    <h1>Informatics-2021-Lab2 Library</h1>
-    <h3>Add Category</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addCategory()">
-        <input type="text" id="add-roomNumber" placeholder="New roomNumber">
-        <input type="text" id="add-oneNightPrice" placeholder="New oneNightPrice">
-        <select id="mySelect"></select>
-        <input type="submit" value="Add">
-    </form>
-    <div id="editCategory">
-        <h3>Edit</h3>
-        <form action="javascript:void(0);" onsubmit="updateCategory()" id="editForm">
-            <input type="hidden" id="edit-id">
-            <input type="text" id="edit-roomNumber">
-            <input type="text" id="edit-oneNightPrice">
-            <input type="text" id="edit-state">
-            <select id="edit-mySelect"></select>
-            <input type="submit" value="Save">
-            <a onclick="closeInput()" aria-label="Close">&#10006;</a>
+    <div class="headers">
+        <h1>WEBLAB 2023</h1>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <div class="form-container">
+        <form action="javascript:void(0);" method="POST" onsubmit="addCategory()">
+            <div class="headers">
+                <h3>Add Room</h3>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">New room number</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" id="add-roomNumber">
+
+                <span class="input-group-text" id="basic-addon2">New one night price</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon2" id="add-oneNightPrice">
+
+                <select id="mySelect" class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></select>
+                <input type="submit" class="btn btn-outline-dark" value="Add">
+            </div>
+
         </form>
     </div>
+
+
+    <div class="form-container" id="editCategory">
+
+        <form action="javascript:void(0);" onsubmit="updateCategory()" id="editForm">
+            <div class="input-group mb-3">
+                <input type="hidden" id="edit-id">
+
+                <span class="input-group-text" id="basic-addon3">Edit roomNumber</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon3" id="edit-roomNumber">
+
+                <span class="input-group-text" id="basic-addon4">Edit oneNightPrice</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon4" id="edit-oneNightPrice">
+
+                <span class="input-group-text" id="basic-addon5">Edit state</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon5" id="edit-state">
+
+                <select id="edit-mySelect" class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></select>
+                <input type="submit" class="btn btn-outline-dark" value="Save">
+                <input type="submit" class="btn btn-outline-dark" onclick="closeInput()" aria-label="Close" value="Cancel">
+            </div>
+        </form>
+    </div>
+
     <p id="counter"></p>
-    <table>
-        <tr>
-            <th>RommNumber</th>
-            <th>OneKnightPrice</th>
-            <th>RommTupe</th>
-            <th>state</th>
-        </tr>
-        <tbody id="rooms"></tbody>
-    </table>
+    <div class=".table-container">
+        <table>
+            <tr>
+                <th>RoomNumber</th>
+                <th>OneKnightPrice</th>
+                <th>RoomTupe</th>
+                <th>state</th>
+            </tr>
+            <tbody id="rooms"></tbody>
+        </table>
+    </div>
+
     <script src="js/lab2.js" asp-append-version="true"></script>
     <script type="text/javascript">
-		getRooms();
+        getRooms();
     </script>
 </body>
 </html>
