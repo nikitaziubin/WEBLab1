@@ -78,7 +78,7 @@ namespace WebApplication3.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Rooms
@@ -113,7 +113,7 @@ namespace WebApplication3.Controllers
             _context.Rooms.Remove(room);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool RoomExists(int id)

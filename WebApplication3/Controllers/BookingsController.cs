@@ -40,9 +40,10 @@ namespace WebApplication3.Controllers
           {
               return NotFound();
           }
-            var booking = await _context.Bookings.FindAsync(id);
+			var booking = await _context.Bookings.Include(b=>b.clientNavigation).FirstOrDefaultAsync(b => b.roomId == id);
 
-            if (booking == null)
+
+			if (booking == null)
             {
                 return NotFound();
             }

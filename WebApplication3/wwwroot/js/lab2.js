@@ -1,7 +1,9 @@
 ﻿const uri = 'api/rooms';
 const uriRoomtypes = 'api/roomTypes';
 const uriBoking = 'api/bookings';
+const uriClient = 'api/clients';
 let rooms = [];
+let booking;
 
 
 fetch(uriRoomtypes)
@@ -81,7 +83,7 @@ function displayEditForm(id) {
 }
 
 function updateCategory() {
-    const categoryId = document.getElementById('edit-id').value;
+    const roomID = document.getElementById('edit-id').value;
     const room = {
         id: document.getElementById('edit-id').value.trim(),
         roomNumber: document.getElementById('edit-roomNumber').value.trim(),
@@ -89,7 +91,7 @@ function updateCategory() {
         state: document.getElementById('edit-state').value.trim(),
         roomTypeid: document.getElementById('edit-mySelect').value.trim()
     };
-    fetch(`${uri}/${categoryId}`, {
+    fetch(`${uri}/${roomID}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -106,18 +108,39 @@ function updateCategory() {
 function closeInput() {
     document.getElementById('editForm').style.display = 'none';
 }
+
 function redirectToBookingPage(roomId) {
     window.location.href = `Booking.html?room=${roomId}`;
 }
 
-function toggleAddBookingButtonVisibility(state) {
-    const addBookingButton = document.querySelector('#add-booking-button');
+function getBookingByRoomId(roomId, tr)
+{
+     fetch(`${uriBoking}/${roomId}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+     })
+        .then(response => response.json())
+        .then(data => setBooking(data, tr))   
+        .catch(error => console.error('Unable to update category.', error));
+}
 
-    if (state) {
-        addBookingButton.style.display = 'block';
-    } else {
-        addBookingButton.style.display = 'none';
-    }
+function setBooking(data, tr)
+{
+    booking = data;
+    let td7 = tr.insertCell(7);
+    textNode = document.createTextNode(booking.clientNavigation.name);
+    td7.appendChild(textNode);
+
+    let td8 = tr.insertCell(8);
+    textNode = document.createTextNode(booking.arrivalDate.split("T")[0]);
+    td8.appendChild(textNode);
+
+    let td9 = tr.insertCell(9);
+    textNode = document.createTextNode(booking.departureDate.split("T")[0]);
+    td9.appendChild(textNode);
 }
 
 function _displayRooms(data) {
@@ -170,7 +193,26 @@ function _displayRooms(data) {
 
             let td6 = tr.insertCell(6);
             td6.appendChild(makeBooking);
-        }   
+
+            let td7 = tr.insertCell(7);
+            let textNode = document.createTextNode('None');
+            td7.appendChild(textNode);
+
+            let td8 = tr.insertCell(8);
+            textNode = document.createTextNode('None');
+            td8.appendChild(textNode);
+
+            let td9 = tr.insertCell(9);
+            textNode = document.createTextNode('None');
+            td9.appendChild(textNode);
+        }
+        else
+        {
+            let td6 = tr.insertCell(6);
+            let textNode = document.createTextNode('Boked');
+            td6.appendChild(textNode);
+            getBookingByRoomId(room.id, tr);
+        }
     });
     rooms = data;
 }
