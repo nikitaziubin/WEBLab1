@@ -4,13 +4,14 @@ const uriBoking = 'api/bookings';
 const uriClient = 'api/clients';
 let rooms = [];
 let booking;
-
+let currentPage = 1;
+const rowsPerPage = 10;
 
 fetch(uriRoomtypes)
-    .then(response => response.json()) 
-    .then(roomTypes => { 
-        roomTypes.forEach(roomType => { 
-            const optionElement = document.createElement("option"); 
+    .then(response => response.json())
+    .then(roomTypes => {
+        roomTypes.forEach(roomType => {
+            const optionElement = document.createElement("option");
             optionElement.value = roomType.id;
             optionElement.text = roomType.roomType;
             selectElement.appendChild(optionElement);
@@ -20,12 +21,7 @@ fetch(uriRoomtypes)
 const selectElement = document.getElementById("mySelect");
 
 
-function getRooms() {
-    fetch(uri)
-        .then(response => response.json())
-        .then(data => _displayRooms(data))
-        .catch(error => console.error('Unable to get categories.', error));
-}
+
 
 function addCategory() {
     const addroomNumberTextbox = document.getElementById('add-roomNumber');
@@ -113,22 +109,7 @@ function redirectToBookingPage(roomId) {
     window.location.href = `Booking.html?room=${roomId}`;
 }
 
-function getBookingByRoomId(roomId, tr)
-{
-     fetch(`${uriBoking}/${roomId}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-     })
-        .then(response => response.json())
-        .then(data => setBooking(data, tr))   
-        .catch(error => console.error('Unable to update category.', error));
-}
-
-function setBooking(data, tr)
-{
+function setBooking(data, tr) {
     booking = data;
     let td7 = tr.insertCell(7);
     textNode = document.createTextNode(booking.clientNavigation.name);
@@ -142,6 +123,68 @@ function setBooking(data, tr)
     textNode = document.createTextNode(booking.departureDate.split("T")[0]);
     td9.appendChild(textNode);
 }
+
+function getBookingByRoomId(roomId, tr) {
+    fetch(`${uriBoking}/${roomId}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => setBooking(data, tr))
+        .catch(error => console.error('Unable to update category.', error));
+}
+
+function getRooms() {
+    fetch(uri)
+        .then(response => response.json())
+        .then(data => {
+            rooms = data;
+            displayRoomsOnCurrentPage();
+            displayPaginationButtons();
+        })
+        /*_displayRooms(data))*/
+        .catch(error => console.error('Unable to get categories.', error));
+}
+
+function displayRoomsOnCurrentPage() {
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    _displayRooms(rooms.slice(start, end));
+}
+
+function displayPaginationButtons() {
+    const paginationContainer = document.querySelector('.pagination');
+    paginationContainer.innerHTML = '';
+
+    const ul = document.createElement('ul');
+    ul.className = 'paginationList';
+
+
+    const pageCount = Math.ceil(rooms.length / rowsPerPage);
+    for (let i = 1; i <= pageCount; i++) {
+        const li = document.createElement('li');
+        li.className = 'paginationItem';
+
+
+        const button = document.createElement('button');
+        button.innerText = i;
+        button.className = i === currentPage ? 'paginationItemActive' : 'paginationItem';
+        button.addEventListener('click', () => {
+            currentPage = i;
+            displayRoomsOnCurrentPage();
+            displayPaginationButtons();
+        });
+
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        paginationContainer.appendChild(button);
+    }
+}
+
 
 function _displayRooms(data) {
     const tBody = document.getElementById('rooms');
@@ -206,13 +249,12 @@ function _displayRooms(data) {
             textNode = document.createTextNode('None');
             td9.appendChild(textNode);
         }
-        else
-        {
+        else {
             let td6 = tr.insertCell(6);
             let textNode = document.createTextNode('Boked');
             td6.appendChild(textNode);
             getBookingByRoomId(room.id, tr);
         }
     });
-    rooms = data;
+    /*rooms = data;*/
 }

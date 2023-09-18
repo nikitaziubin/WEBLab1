@@ -16,7 +16,7 @@
         background-attachment: fixed;
         scroll-behavior: smooth;
     }
-        
+
     .table-container {
         display: flex;
         justify-content: center;
@@ -33,7 +33,6 @@
 
     table, th, td {
         border: 1px solid white;
-        
     }
 
     th, td {
@@ -44,12 +43,11 @@
 
     .form-container {
         display: flex;
-       /* background-color: rgb(255, 255, 255, 0.8);*/
+        /* background-color: rgb(255, 255, 255, 0.8);*/
         width: 1000px;
         margin-left: 200px;
         align-items: center;
         justify-content: center;
-
     }
 
     .headers {
@@ -60,9 +58,31 @@
         font-weight: 700;
     }
 
-    h1, h3{
+    h1, h3 {
         color: white;
     }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+    }
+
+    .paginationList {
+        display: flex;
+        list-style-type: none;
+    }
+
+    .paginationItem {
+        padding: 8px;
+        margin: 8px;
+        cursor: pointer;
+    }
+
+    .paginationItemActive {
+        font-weight: 800;
+        color: gold;
+    }
+
 </style>
 
 
@@ -77,7 +97,7 @@
     <div class="form-container">
         <form action="javascript:void(0);" method="POST" onsubmit="addCategory()">
             <div class="headers">
-                <h3 >Add Room</h3>
+                <h3>Add Room</h3>
             </div>
 
             <div class="input-group mb-3">
@@ -118,13 +138,13 @@
     </div>
 
     <p id="counter"></p>
-    <div class=".table-container" >
+    <div class=".table-container">
         <table>
             <tr>
                 <th>RoomNumber</th>
-                <th>OneKnightPrice</th>
-                <th>RoomTupe</th>
-                <th>state</th>
+                <th>OneNightPrice</th>
+                <th>RoomTYpe</th>
+                <th>State</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -134,7 +154,9 @@
             </tr>
             <tbody id="rooms"></tbody>
         </table>
+        <div class="pagination"></div>
     </div>
+
 
     <script src="js/lab2.js" asp-append-version="true"></script>
     <script type="text/javascript">
