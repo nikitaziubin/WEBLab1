@@ -171,7 +171,7 @@ function displayPaginationButtons() {
 
         const button = document.createElement('button');
         button.innerText = i;
-        button.className = i === currentPage ? 'paginationItemActive' : 'paginationItem';
+        button.className = i === currentPage ? 'btn btn-outline-light btn-sm active' : 'btn btn-outline-light btn-sm';
         button.addEventListener('click', () => {
             currentPage = i;
             displayRoomsOnCurrentPage();

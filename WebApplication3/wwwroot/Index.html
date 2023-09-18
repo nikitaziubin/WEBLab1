@@ -26,7 +26,7 @@
 
     table {
         border-collapse: collapse;
-        width: 60%;
+        width: 80%;
         margin: 0 auto;
         background-color: rgb(255, 255, 255, 0.1);
     }
@@ -79,7 +79,7 @@
     }
 
     .paginationItemActive {
-        font-weight: 800;
+        /*font-weight: 800;*/
         color: gold;
     }
 
@@ -96,9 +96,9 @@
 
     <div class="form-container">
         <form action="javascript:void(0);" method="POST" onsubmit="addCategory()">
-            <div class="headers">
+            <!--<div class="headers">
                 <h3>Add Room</h3>
-            </div>
+            </div>-->
 
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1">New room number</span>
@@ -121,10 +121,10 @@
             <div class="input-group mb-3">
                 <input type="hidden" id="edit-id">
 
-                <span class="input-group-text" id="basic-addon3">Edit roomNumber</span>
+                <span class="input-group-text" id="basic-addon3">Edit room number</span>
                 <input type="text" class="form-control" aria-describedby="basic-addon3" id="edit-roomNumber">
 
-                <span class="input-group-text" id="basic-addon4">Edit oneNightPrice</span>
+                <span class="input-group-text" id="basic-addon4">Edit one night price</span>
                 <input type="text" class="form-control" aria-describedby="basic-addon4" id="edit-oneNightPrice">
 
                 <span class="input-group-text" id="basic-addon5">Edit state</span>
@@ -141,9 +141,9 @@
     <div class=".table-container">
         <table>
             <tr>
-                <th>RoomNumber</th>
-                <th>OneNightPrice</th>
-                <th>RoomTYpe</th>
+                <th>Room number</th>
+                <th>One night price</th>
+                <th>Room type</th>
                 <th>State</th>
                 <th></th>
                 <th></th>
