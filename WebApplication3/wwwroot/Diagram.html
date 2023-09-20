@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Diagram</title>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script>
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart2);
+
+        function drawChart() {
+            $.get('/api/Diagram1/JsonData', function (JsonData) {
+                data = google.visualization.arrayToDataTable(JsonData, false);
+                var options = {
+                    width: 550,
+                    title: "Ratio of free rooms to price",
+                    height: 550
+                };
+                chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+                chart.draw(data, options);
+            });
+        }
+
+        function drawChart2() {
+            $.get('/api/Diagram2/JsonData', function (JsonData) {
+                data = google.visualization.arrayToDataTable(JsonData, false);
+                var options = {
+                    width: 550,
+                    title: "Ratio of rooms to departure date",
+                    height: 550
+                };
+                chart = new google.visualization.BarChart(document.getElementById('chart2'));
+                chart.draw(data, options);
+            });
+        }
+
+    </script>
+
+
+
+</head>
+
+<body>
+    <div id="chart"></div>
+    <div id="chart2"></div>
+    <a href="index.html" class="btn btn-dark top-right">Close</a>
+
+</body>
+</html>
