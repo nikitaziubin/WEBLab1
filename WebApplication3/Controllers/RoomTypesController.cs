@@ -22,13 +22,16 @@ namespace WebApplication3.Controllers
 
         // GET: api/RoomTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RoomType>>> GetRoomTypes()
+        public async Task<ActionResult<IEnumerable<RoomType>>> GetRoomTypes(string term)
         {
           if (_context.RoomTypes == null)
           {
               return NotFound();
           }
-            return await _context.RoomTypes.ToListAsync();
+			var filteredRoomTypes = _context.RoomTypes
+								   .Where(r => r.roomType.Contains(term));
+
+			return await filteredRoomTypes.ToListAsync();
         }
 
         // GET: api/RoomTypes/5

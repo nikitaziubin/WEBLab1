@@ -7,18 +7,48 @@ let booking;
 let currentPage = 1;
 const rowsPerPage = 10;
 
-fetch(uriRoomtypes)
-    .then(response => response.json())
-    .then(roomTypes => {
-        roomTypes.forEach(roomType => {
-            const optionElement = document.createElement("option");
-            optionElement.value = roomType.id;
-            optionElement.text = roomType.roomType;
-            selectElement.appendChild(optionElement);
+//fetch(uriRoomtypes)
+//    .then(response => response.json())
+//    .then(roomTypes => {
+//        roomTypes.forEach(roomType => {
+//            const optionElement = document.createElement("option");
+//            optionElement.value = roomType.id;
+//            optionElement.text = roomType.roomType;
+//            selectElement.appendChild(optionElement);
+//        });
+//    })
+//    .catch(error => console.error(error));
+//const selectElement = document.getElementById("mySelect");
+
+
+
+$("#yourInputId, #yourInputId-edit").autocomplete({
+    source: function (request, response) {
+        $.ajax({
+            url: uriRoomtypes,
+            type: "GET",
+            dataType: "json",
+            data: {
+                term: request.term
+            },
+            success: function (data) {
+                const transformedData = data.map(roomType => ({
+                    label: roomType.roomType,
+                    value: roomType.id
+                }));
+
+                response(transformedData);
+            }
         });
-    })
-    .catch(error => console.error(error));
-const selectElement = document.getElementById("mySelect");
+    },
+    minLength: 1,
+    delay: 300,
+    select: function (event, ui) {
+        event.preventDefault();
+        $(this).val(ui.item.label);
+        $("#selectedId, #selectedId-edit").val(ui.item.value);
+    }
+});
 
 
 
@@ -26,13 +56,15 @@ const selectElement = document.getElementById("mySelect");
 function addCategory() {
     const addroomNumberTextbox = document.getElementById('add-roomNumber');
     const addoneNightPriceTextbox = document.getElementById('add-oneNightPrice');
-    const addroomTypeTextbox = document.getElementById('mySelect');
+    const addroomTypeTextbox = document.getElementById('selectedId');
     const category = {
         roomNumber: addroomNumberTextbox.value.trim(),
         oneNightPrice: addoneNightPriceTextbox.value.trim(),
         state: false, /*addstateTextbox.value.trim(),*/
         roomTypeId: addroomTypeTextbox.value.trim(),
     };
+
+
     fetch(uri, {
         method: 'POST',
         headers: {
@@ -59,22 +91,22 @@ function deleteCategory(id) {
 function displayEditForm(id) {
     fetch(uriRoomtypes)
         .then(response => response.json())
-        .then(roomTypes => {
-            roomTypes.forEach(roomType => {
-                const optionElement = document.createElement("option");
-                optionElement.value = roomType.id;
-                optionElement.text = roomType.roomType;
-                selectElement.appendChild(optionElement);
-            });
-        })
-        .catch(error => console.error(error));
+        //.then(roomTypes => {
+        //    roomTypes.forEach(roomType => {
+        //        const optionElement = document.createElement("option");
+        //        optionElement.value = roomType.id;
+        //        optionElement.text = roomType.roomType;
+        //        selectElement.appendChild(optionElement);
+        //    });
+        //})
+        //.catch(error => console.error(error));
     const selectElement = document.getElementById("edit-mySelect");
     const room = rooms.find(room => room.id === id);
     document.getElementById('edit-id').value = room.id;
     document.getElementById('edit-roomNumber').value = room.roomNumber;
     document.getElementById('edit-oneNightPrice').value = room.oneNightPrice;
     document.getElementById('edit-state').value = room.state;
-    document.getElementById('edit-mySelect');// = room.roomTypeid;
+    document.getElementById('yourInputId') = room.roomTypeNavigation.roomType;
     document.getElementById('editForm').style.display = 'block';
 }
 
@@ -85,7 +117,7 @@ function updateCategory() {
         roomNumber: document.getElementById('edit-roomNumber').value.trim(),
         oneNightPrice: document.getElementById('edit-oneNightPrice').value.trim(),
         state: document.getElementById('edit-state').value.trim(),
-        roomTypeid: document.getElementById('edit-mySelect').value.trim()
+        roomTypeid: document.getElementById('selectedId-edit').value.trim()
     };
     fetch(`${uri}/${roomID}`, {
         method: 'PUT',

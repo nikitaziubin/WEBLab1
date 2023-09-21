@@ -6,6 +6,12 @@
     <title>WEBLAB 2023</title>
     <!-- <link rel="stylesheet" href="css/site.css"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js " crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
+
+
 </head>
 
 <style>
@@ -118,7 +124,10 @@
                 <span class="input-group-text" id="basic-addon2">New one night price</span>
                 <input type="text" class="form-control" aria-describedby="basic-addon2" id="add-oneNightPrice">
 
-                <select id="mySelect" class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></select>
+                <span class="input-group-text" id="basic-addon2">New room type</span>
+                <input id="yourInputId" type="text" class="form-control" aria-describedby="basic-addon2">
+                <input type="hidden" id="selectedId-edit">
+
                 <input type="submit" class="btn btn-light" value="Add">
             </div>
 
@@ -141,7 +150,10 @@
                 <span class="input-group-text" id="basic-addon5">Edit state</span>
                 <input type="text" class="form-control" aria-describedby="basic-addon5" id="edit-state">
 
-                <select id="edit-mySelect" class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></select>
+                <span class="input-group-text" id="basic-addon5">Edit room type</span>
+                <input id="yourInputId-edit" type="text" class="form-control" aria-describedby="basic-addon5">
+                <input type="hidden" id="selectedId">
+
                 <input type="submit" class="btn btn-light" value="Save">
                 <input type="submit" class="btn btn-light" onclick="closeInput()" aria-label="Close" value="Cancel">
             </div>
