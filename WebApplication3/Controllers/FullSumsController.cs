@@ -86,10 +86,11 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public async Task<ActionResult<double>> PostFullSum(FullSum fullSum)
         {
-            DateTime firstDate = DateTime.ParseExact(fullSum.departureDate, "dd-MM-yyyy", null);
+            DateTime firstDate = (DateTime)fullSum.departureDate;
             double departureDate = firstDate.DayOfYear;
-            DateTime secondDate = DateTime.ParseExact(fullSum.arrivalDate, "dd-MM-yyyy", null);
-            double arrivalDate = secondDate.DayOfYear;
+            DateTime secondDate = (DateTime)fullSum.arrivalDate;
+
+			double arrivalDate = secondDate.DayOfYear;
             double difference = departureDate - arrivalDate;
             double FullPrice = difference * fullSum.oneNightPrice;
             _context.FullSum.Add(fullSum);

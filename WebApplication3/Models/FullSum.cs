@@ -8,9 +8,9 @@ namespace WebApplication3.Models
         [Key]
         public int Id { get; set; }
         [NotMapped]
-        public string? departureDate { get; set; }
+        public DateTime? departureDate { get; set; }
         [NotMapped]
-        public string? arrivalDate { get; set; }
+        public DateTime? arrivalDate { get; set; }
         [NotMapped]
         public double oneNightPrice { get; set; }
     }

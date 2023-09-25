@@ -50,9 +50,6 @@ $("#yourInputId, #yourInputId-edit").autocomplete({
     }
 });
 
-
-
-
 function addCategory() {
     const addroomNumberTextbox = document.getElementById('add-roomNumber');
     const addoneNightPriceTextbox = document.getElementById('add-oneNightPrice');
@@ -91,22 +88,22 @@ function deleteCategory(id) {
 function displayEditForm(id) {
     fetch(uriRoomtypes)
         .then(response => response.json())
-        //.then(roomTypes => {
-        //    roomTypes.forEach(roomType => {
-        //        const optionElement = document.createElement("option");
-        //        optionElement.value = roomType.id;
-        //        optionElement.text = roomType.roomType;
-        //        selectElement.appendChild(optionElement);
-        //    });
-        //})
-        //.catch(error => console.error(error));
+    //.then(roomTypes => {
+    //    roomTypes.forEach(roomType => {
+    //        const optionElement = document.createElement("option");
+    //        optionElement.value = roomType.id;
+    //        optionElement.text = roomType.roomType;
+    //        selectElement.appendChild(optionElement);
+    //    });
+    //})
+    //.catch(error => console.error(error));
     const selectElement = document.getElementById("edit-mySelect");
     const room = rooms.find(room => room.id === id);
     document.getElementById('edit-id').value = room.id;
     document.getElementById('edit-roomNumber').value = room.roomNumber;
     document.getElementById('edit-oneNightPrice').value = room.oneNightPrice;
     document.getElementById('edit-state').value = room.state;
-    document.getElementById('yourInputId') = room.roomTypeNavigation.roomType;
+    /*document.getElementById('yourInputId') = room.roomTypeNavigation.roomType;*/
     document.getElementById('editForm').style.display = 'block';
 }
 
@@ -290,3 +287,44 @@ function _displayRooms(data) {
     });
     /*rooms = data;*/
 }
+
+$(document).ready(function () {
+    $("#add-roomNumber, #add-oneNightPrice, #edit-roomNumber, #edit-oneNightPrice").on("input", function () {
+        var value = $(this).val();
+
+        if (!/^\d+$/.test(value) && value !== "") {
+            $("#error-message").text("Please enter only numbers.");
+            $("#error-modal").show();
+        } 
+    });
+    $(".close-button").on("click", function () {
+        $("#error-modal").hide();
+        $("#add-roomNumber, #add-oneNightPrice, #edit-roomNumber, #edit-oneNightPrice").val('');
+    });
+    $(window).on("click", function (event) {
+        if ($(event.target).is("#error-modal")) {
+            $("#error-modal").hide();
+            $("#add-roomNumber, #add-oneNightPrice, #edit-roomNumber, #edit-oneNightPrice").val('');
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#yourInputId, #edit-state, #yourInputId-edit").on("input", function () {
+        var value = $(this).val();        
+        if (!/^[a-zA-Z]+$/.test(value) && value !== "") {
+            $("#error-message").text("Please enter only letters.");
+            $("#error-modal").show();
+        }
+    });
+    $(".close-button").on("click", function () {
+        $("#error-modal").hide(); 
+        $("#yourInputId, #edit-state, #yourInputId-edit").val('');
+    });
+    $(window).on("click", function (event) {
+        if ($(event.target).is("#error-modal")) {
+            $("#error-modal").hide();
+            $("#yourInputId, #edit-state, #yourInputId-edit").val('');
+        }
+    });
+});

@@ -74,17 +74,24 @@ function setsum(data) {
 
 }
 
+function convertDateFormat(inputDate) {
+    var parts = inputDate.split('-');
+    return parts[2] + '-' + parts[1] + '-' + parts[0];
+}
+
 function calculateSum() {
-    const arrivalDate = document.getElementById('add-Arrival-date').value;
-    const departureDate = document.getElementById('add-Departure-date').value;
+    let arrivalDate = document.getElementById('add-Arrival-date').value;
+    let departureDate = document.getElementById('add-Departure-date').value;
     const OneKnightPrice = document.getElementById('OneKnightPrice').value;
+
+    //arrivalDate = convertDateFormat(arrivalDate);
+    //departureDate = convertDateFormat(departureDate);
 
     const Fullsum = {
         arrivalDate: arrivalDate,
         departureDate: departureDate,
         oneNightPrice: OneKnightPrice,
     };
-    //`${uriBoking}/CalculateSum`
     fetch(uriFullSum, {
         method: 'POST',
         headers: {
