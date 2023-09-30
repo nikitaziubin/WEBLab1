@@ -2,21 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Confluent.Kafka;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
+using Newtonsoft.Json;
 using WebApplication3.Models;
 
 
 namespace WebApplication3.Controllers
 {
-    [Route("api/[controller]")]
+	public class EmailRequest
+	{
+		public string To { get; set; }
+		public string Subject { get; set; }
+		public string Body { get; set; }
+	}
+	[Route("api/[controller]")]
     [ApiController]
     public class BookingsController : ControllerBase
     {
         private readonly HotelContext _context;
 
-        public BookingsController(HotelContext context)
+		private const string TopicName = "Email";
+
+
+
+		public BookingsController(HotelContext context)
         {
             _context = context;
         }
@@ -95,12 +108,74 @@ namespace WebApplication3.Controllers
             room.state = true;
             booking.roomNavigation = null;
             _context.Bookings.Add(booking);
+            ProduceMessage(room.roomNumber, booking.arrivalDate, booking.departureDate);
+            ConsumeAndSendEmail();
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetBooking", new { id = booking.id }, booking);
+			return CreatedAtAction("GetBooking", new { id = booking.id }, booking);
         }
 
-        // DELETE: api/Bookings/5
-        [HttpDelete("{id}")]
+		static void ProduceMessage(int roomNUM, DateTime arrivalDate, DateTime departureDate)
+		{
+			var config = new ProducerConfig
+			{
+				BootstrapServers = "pkc-56d1g.eastus.azure.confluent.cloud:9092",
+				SecurityProtocol = SecurityProtocol.SaslSsl,
+				SaslMechanism = SaslMechanism.Plain,
+				SaslUsername = "**************",
+				SaslPassword = "*********************************",
+			};
+
+			using var producer = new ProducerBuilder<Null, string>(config).Build();
+            var emailMessage = JsonConvert.SerializeObject(new
+            {
+            	To = "recipient@example.com",
+            	Subject = "Сonfirmation of successful booking",
+            	Body = $"Hello Mr Nikita, we would like to inform you that you have successfully booked room {roomNUM} from {arrivalDate} to {departureDate}"
+            });
+            //string emailMessage = "test";
+
+			producer.Produce(TopicName, new Message<Null, string> { Value = emailMessage });
+			producer.Flush();
+		}
+
+		static void ConsumeAndSendEmail()
+		{
+			var consumerConfig = new ConsumerConfig
+			{
+				GroupId = "email-group",
+				BootstrapServers = "pkc-56d1g.eastus.azure.confluent.cloud:9092",
+				SecurityProtocol = SecurityProtocol.SaslSsl,
+				SaslMechanism = SaslMechanism.Plain,
+				SaslUsername = "**************",
+				SaslPassword = "*********************************",
+			};
+
+			using var consumer = new ConsumerBuilder<Null, string>(consumerConfig).Build();
+			consumer.Subscribe(TopicName);
+
+			var consumeResult = consumer.Consume();
+			var emailRequest = JsonConvert.DeserializeObject<EmailRequest>(consumeResult.Value);
+			SendEmail(emailRequest);
+		}
+
+		static void SendEmail(EmailRequest emailRequest)
+		{
+			MimeMessage message = new MimeMessage();
+			message.From.Add(new MailboxAddress("Nikita", "test.sending@ukr.net"));
+			message.To.Add(new MailboxAddress("Recipient Name", "test.sendeng@gmail.com"));
+			message.Subject = emailRequest.Subject;
+			message.Body = new TextPart("Plain") { Text = emailRequest.Body };
+
+
+			using var client = new MailKit.Net.Smtp.SmtpClient();
+			client.Connect("smtp.ukr.net", 465, true);
+			client.Authenticate("test.sending@ukr.net", "xUj2RdtgRQwXTm3y");
+			client.Send(message);
+		}
+
+
+		// DELETE: api/Bookings/5
+		[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBooking(int id)
         {
             if (_context.Bookings == null)
