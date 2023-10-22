@@ -121,8 +121,8 @@ namespace WebApplication3.Controllers
 				BootstrapServers = "pkc-56d1g.eastus.azure.confluent.cloud:9092",
 				SecurityProtocol = SecurityProtocol.SaslSsl,
 				SaslMechanism = SaslMechanism.Plain,
-				SaslUsername = "**************",
-				SaslPassword = "*********************************",
+				SaslUsername = "JWJNH6QDI6QXHRAW",
+				SaslPassword = "k0DRmDOXZRKt4AniDBX5wjzVofUTHfJzrXmKIzxq0/vA/QNI8PCHvRKOL3bFZirp",
 			};
 
 			using var producer = new ProducerBuilder<Null, string>(config).Build();
@@ -146,8 +146,8 @@ namespace WebApplication3.Controllers
 				BootstrapServers = "pkc-56d1g.eastus.azure.confluent.cloud:9092",
 				SecurityProtocol = SecurityProtocol.SaslSsl,
 				SaslMechanism = SaslMechanism.Plain,
-				SaslUsername = "**************",
-				SaslPassword = "*********************************",
+				SaslUsername = "JWJNH6QDI6QXHRAW",
+				SaslPassword = "k0DRmDOXZRKt4AniDBX5wjzVofUTHfJzrXmKIzxq0/vA/QNI8PCHvRKOL3bFZirp",
 			};
 
 			using var consumer = new ConsumerBuilder<Null, string>(consumerConfig).Build();
